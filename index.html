@@ -1,0 +1,1920 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+        <title> MICHELIN Flagship Store </title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+        <script src="jquery-1.9.1.js"></script>
+        <script src="jquery.easing.min.js"></script>
+        <script src="sly.js"></script>
+
+        <style>
+
+            .slyScrollBar{
+                position: absolute;
+                right: 0px;
+                top: 0;
+                width: 10px;
+                background: #FFF;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                bottom: 0;
+                padding: 1px 0;
+            }
+            .slyScrollBar .handle{
+                position:absolute;
+                width:100%;
+                height:100%;
+                padding: 0 5px;
+                left: -5px;
+                cursor:pointer;
+            }
+            .slyScrollBar .handle:hover .mousearea,
+            .slyScrollBar .handle.dragged .mousearea{
+                background:#B6B6B6;
+            }
+            .slyScrollBar .handle .mousearea{
+                width: 8px;
+                height: 100%;
+                position: absolute;
+                background: #4B4B4B;
+                border-radius: 5px;
+                left: 6px;
+                top: 0;
+            }
+
+            .slice{
+                position:absolute;
+                background-repeat:no-repeat;
+                background-position:left center;
+                width:1000px;
+                top:6px;
+                height:385px;
+                -webkit-transition: left .3s ease;
+                -moz-transition: left .3s ease;
+                transition: left .3s ease;
+                overflow:hidden;
+            }
+            .slice_1{
+                left:0px;
+            }
+            .slice_2{
+                left:188px;
+            }
+            .slice_3{
+                left:547px;
+            }
+            .hover_1 .slice_1{
+                left:0px;
+            }
+            .hover_1 .slice_2{
+                left:377px;
+            }
+            .hover_1 .slice_3{
+                left:600px;
+            }
+
+            .hover_2 .slice_1{
+                left:0;
+            }
+            .hover_2 .slice_2{
+                left:151px;
+            }
+            .hover_2 .slice_3{
+                left:600px;
+            }
+
+            .hover_3 .slice_1{
+                left:0;
+            }
+            .hover_3 .slice_2{
+                left:151px;
+            }
+            .hover_3 .slice_3{
+                left:447px;
+            }
+
+            .slice img{
+                position:absolute;
+                top:-10px;
+                right:0px;
+                visibility:hidden;
+                opacity:0;
+                -webkit-transition: all .3s ease;
+                -moz-transition: all .3s ease;
+                transition: all .3s ease;
+            }
+            .slice:hover img{
+                top:0px;
+                right:10px;
+                opacity:1;
+                visibility:visible;
+            }
+
+            .slice div{
+                display:none;
+            }
+            .slice:hover div{
+                display:block;
+            }
+
+            body,form{margin: 0px; padding: 0px;font-family:微软雅黑; }
+            .shop-banner{min-width: 990px; height: 177px; position: relative; background: url(images/shop_banner.jpg) no-repeat center;}
+            .shop-banner .content{width: 990px; height: 150px; margin: 0px auto;}
+            .shop-banner .content .nav{float: right; margin: 20px auto;}
+            .shop-banner .content .nav a{float: left; padding: 0px 15px; color: #FFF; text-decoration: none; font-family: 微软雅黑; font-size: 12px;}
+            .shop-banner .content .nav a span{display: block; height: 20px; line-height: 20px; text-align: center;}
+            .shop-banner .content .search{float: right; width: 246px; height: 26px; margin-right: 20px; background: url(images/search.png) no-repeat center; clear: both;}
+            .shop-banner .content .search form,
+            .shop-banner .content .search form button{padding: 0px; margin: 0px; height: 25px; line-height: 25px;}
+            .shop-banner .content .search form input{width: 197px;border: 0px;margin-left: 13px;color: #000000;outline: none;margin-top: 4px;background: transparent;}
+            .shop-banner .content .search form button{width: 30px; background: none; border: none; vertical-align:middle; cursor: pointer;}
+
+            /*品牌*/
+            .branks{width: 990px; margin: 0px auto; overflow: hidden; margin-top: 20px;}
+            .branks .item{float: left; width: 160px; overflow: hidden; margin-left: 5px;}
+            .branks .item img{cursor: pointer; display: block; border: none;}
+            .branks .item .links{width: 145px; height: 87px; margin: 0px auto; margin-top: -5px; text-align: center; background: url(images/link_bg.png) no-repeat; padding: 5px 0px; overflow: hidden;}
+            .branks .item .links a{color: #4B4B4B; font-family: 微软雅黑; font-size: 13px; display: block; margin-top: 5px;}
+
+            /*货架*/
+            .goods{width: 990px; margin: 0px auto; overflow: hidden; margin-top: 60px;}
+            .goods .good-hd{display: block; width: 100%; height: 160px; background-repeat: no-repeat; background-position: center;}
+            .goods .goods-bd{width: 100%; overflow: hidden;}
+            .goods .goods-bd .item{float: left; width: 240px; margin-left: 10px; margin-top: 10px; overflow: hidden;}
+
+            .goods .goods-bd .item .pic-box{position: relative; width: 240px; height: 240px; overflow: hidden;}
+            .goods .goods-bd .item .pic-box .pic,
+            .goods .goods-bd .item .pic-box .pop-pic{display: block; width: 240px; height: 240px; background-repeat: no-repeat; background-position: center; position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; z-index: 99;}
+            .goods .goods-bd .item .pic-box .pop-pic{display: none;}
+            .goods .goods-bd .item .pic-box:hover .pop-pic{display: block;}
+
+
+            .goods .goods-bd .item .item-title{display: block; height: 36px; line-height: 18px; font-size: 12px; margin-top: 5px; font-family: 宋体; color: #4B4B4B; text-decoration: none; overflow: hidden;padding:0 45px;}
+            .goods .goods-bd .item .price{height: 40px; line-height: 40px; text-align: center;}
+            .goods .goods-bd .item .price .price-now{color: #088646; font-size: 24px; font-weight: bold; font-family: arial;}
+
+            .goods .goods-bd .item .price .discount{height: 20px; line-height: 20px;}
+            .goods .goods-bd .item .price .discount .sign{float: left; display: block; width: 5px; height: 20px; background: url(images/price.png) no-repeat center;}
+            .goods .goods-bd .item .price .discount .discount-number{float: left; background-color: #088646; display: block; height: 20px; line-height: 20px; color: #FFF; text-align: center; font-size: 12px; padding: 0px 5px;}
+            .goods .goods-bd .item .price .price-old{text-decoration: line-through; color: #088646; height: 20px; line-height: 20px; font-size: 12px;}
+
+
+            /*店尾*/
+            .mod-ft{min-width: 990px; background-color: #0057a6; margin-top: 20px; overflow: hidden;}
+            .mod-ft .ft-logo{display: block; width: 299px; height: 156px; margin: 0px auto; background: url(images/ft.png) no-repeat center;}
+            .mod-ft .btns{width: 330px; margin: 20px auto; overflow: hidden;} 
+            .mod-ft .btns a{display: block; float: left; width: 100px; height: 30px; line-height: 30px; margin-right: 10px; color: #FFF; text-align: center; text-decoration: none;}
+            .mod-ft .btns a .pop{display: block;}
+
+            .mod-ft .btns a:hover{background: #FFF; color: #0057a6;}
+            .mod-ft .btns a:hover span{display: none;}
+            .mod-ft .btns a:hover .pop{display: block;}
+
+            /*参数模块*/
+            .mod-arguments{width: 978px; margin: 0px auto; padding-left: 11px; padding-top: 10px; overflow: hidden; margin-top: 20px; background-color: #efefef;}
+            .mod-arguments .mod-hd{height: 51px;}
+            .mod-arguments .mod-hd a{float: left; display: block; width: 324px; height: 51px; background: url(images/nav1.png) no-repeat;}
+            .mod-arguments .mod-hd a.private{background-position: 0px 0px; width: 338px;}
+            .mod-arguments .mod-hd a.suv{background-position: -337px 0px; width: 324px;}
+            .mod-arguments .mod-hd a.lorry{background-position: -660px 0px; width: 305px;}
+
+            .mod-arguments .mod-hd a:hover.private{background-position: 0px -51px;}
+            .mod-arguments .mod-hd a:hover.suv{background-position: -337px -51px;}
+            .mod-arguments .mod-hd a:hover.lorry{background-position: -660px -51px;}
+
+            .mod-arguments .mod-search{float: left; width: 246px; height: 26px; margin: 15px; background: url(images/search1.png) no-repeat center;}
+            .mod-arguments .mod-search form,
+            .mod-arguments .mod-search form button{padding: 0px; margin: 0px; height: 25px; line-height: 25px;}
+            .mod-arguments .mod-search form input{width: 200px; border: 0px; margin-left: 10px; color: #c5c5c5; outline: none;}
+            .mod-arguments .mod-search form button{width: 30px; background: none; border: none; vertical-align:middle; cursor: pointer;}
+            .mod-arguments .keyword{float: left; height: 26px; margin: 15px 0px; line-height: 26px; }
+            .mod-arguments .keyword a{display: block; float: left; margin-left: 10px; color: #4c4c4c; font-size: 13px; text-decoration: none;}
+
+
+            .stdpty .mod-bd{padding: 30px 30px; overflow: hidden;}
+            .stdpty .left-box{float:left;}
+            .stdpty .left-box .map{width: 572px; height: 612px; background: url(images/map.jpg) no-repeat;}
+
+            .stdpty .right-box{float: right; width: 335px;}
+            .stdpty .right-box .box-hd{width: 315px; height: 28px; line-height: 28px; padding: 0px 10px; color: #FFF; background: url(images/xts.jpg) repeat-x; }
+            .stdpty .right-box .box-hd span{font-family: 微软雅黑; font-weight: bold; font-size: 16px;}
+            .stdpty .right-box .box-hd a{float: right; color: #FFF; text-decoration: none; font-size: 12px; font-family: 微软雅黑;}
+
+            .stdpty .right-box .box-con .item{height: 95px; margin-top: 8px; padding: 0px 5px; background: #FFF; font-family: Verdana, Tahoma, arial, sans-serif, "宋体"; overflow: hidden;}
+            .stdpty .right-box .box-con .item .title{color: #226db1; font-size: 16px; text-decoration: none; display: block; margin: 5px 0px;}
+            .stdpty .right-box .box-con .item .con{color: #4c4c4c; font-size: 13px; height: 45px; overflow: hidden;}
+            .stdpty .right-box .box-con .item .more{display: block; text-align: right; color: #4c4c4c; font-size: 12px; text-decoration: none;}
+            .stdpty .right-box .box-con .phone{margin-top: 20px;}
+
+
+            .xzlt .left-box{float: left;}
+            .xzlt .left-box .tabs{width: 245px; overflow: hidden; margin: 0px 10px;}
+            .xzlt .left-box .tabs .tab-nav a{float: left; width: 119px; height: 34px; line-height: 34px; outline: none; color: #4c4c4c; background: url(images/tabbg.jpg) repeat-x; text-align: center; cursor: pointer; font-family: Verdana, Tahoma, arial, sans-serif, "宋体"; font-size: 16px;}
+            .xzlt .left-box .tabs .tab-nav a.selected{background: #FFF;}
+
+            .xzlt .left-box .tabs .tab-con{background: #FFF; padding: 10px; overflow: hidden;}
+
+            .xzlt .left-box .tabs .tab-con .section .section-box{margin-top: 8px;}
+            .xzlt .left-box .tabs .tab-con .section .section-label{color: #4c4c4c;}
+            .xzlt .left-box .tabs .tab-con .section .section-label span{background-color: #4c4c4c; color: #FFF; margin-right: 5px; padding: 0px 5px; font-size: 16px;}
+            .xzlt .left-box .tabs .tab-con .section .section-con{padding:5px 0px; margin-top: 6px; background: #f2f2f2; height: 185px; overflow-y: scroll;}
+            .xzlt .left-box .tabs .tab-con .section .section-con .section-wrap{position: relative; padding-left: 35px; margin: 15px 0px;}
+            .xzlt .left-box .tabs .tab-con .section .section-con .section-index{position: absolute; left: 10px; top: 6px; color: #e65857; font-size: 14px;}
+            .xzlt .left-box .tabs .tab-con .section .section-con .section-list{padding-right: 10px; line-height: 22px;}
+            .xzlt .left-box .tabs .tab-con .section .section-con .section-list a{font-size: 12px; cursor: pointer; margin-right: 10px;}
+
+            .xzlt .right-box{float: left; padding: 7px; margin: 10px 0px; background: #FFF;}
+            .xzlt .right-box .goods{width: 688px; margin: 0px;}
+            .xzlt .right-box .goods .item{float: left; width: 226px; height: 255px; margin-left: 5px; margin-top: 5px; background: url(images/good.jpg) no-repeat center;}
+
+
+
+
+            .gxcz .left-box{float: left;}
+            .gxcz .left-box .tabs{width: 245px; overflow: hidden; margin: 0px 10px;}
+            .gxcz .left-box .tabs .tab-nav a{float: left; width: 119px; height: 34px; line-height: 34px; outline: none; color: #4c4c4c; background: url(images/tabbg.jpg) repeat-x; text-align: center; cursor: pointer; font-family: Verdana, Tahoma, arial, sans-serif, "宋体"; font-size: 16px;}
+            .gxcz .left-box .tabs .tab-nav a.selected{background: #FFF;}
+
+            .gxcz .left-box .tabs .tab-con{background: #FFF; padding: 10px; overflow: hidden;}
+
+            .gxcz .left-box .tabs .tab-con .section .section-box{margin-top: 8px;}
+            .gxcz .left-box .tabs .tab-con .section .section-label{color: #4c4c4c;padding:3px;}
+            .gxcz .left-box .tabs .tab-con .section .section-label span{background-color: #4c4c4c; color: #FFF; margin-right: 5px; padding: 2px 5px; font-size: 16px;}
+            .gxcz .left-box .tabs .tab-con .section .section-con{padding:0px 0px; margin-top: 6px; background: #f2f2f2; height: 185px; overflow-y: scroll;}
+            .gxcz .left-box .tabs .tab-con .section .section-con .section-wrap{position: relative; padding-left: 35px; margin: 15px 0px;}
+            .gxcz .left-box .tabs .tab-con .section .section-con .section-index{position: absolute; left: 10px; top: 6px; color: #e65857; font-size: 14px;}
+            .gxcz .left-box .tabs .tab-con .section .section-con .section-list{padding-right: 10px; line-height: 22px;}
+            .gxcz .left-box .tabs .tab-con .section .section-con .section-list a{font-size: 12px; cursor: pointer; margin-right: 10px;}
+
+            .gxcz .right-box{width: 702px; height: 515px; float: left; padding: 7px; margin: 10px 0px; background: url(images/gxcz_bg.jpg) repeat-x;}
+            .gxcz .right-box .bycar,
+            .gxcz .right-box .bynormal{display: block; overflow: hidden; padding-left: 10px;}
+            .gxcz .right-box .title{margin-top: 40px;}
+            .gxcz .right-box .items{overflow: hidden; margin-top: 25px; position: relative; float: left;}
+            .gxcz .right-box .items .limit{height: 2px; background: #919191; position: absolute; top: 46px; left: 0px; right: 0px; z-index: 90;}
+            .gxcz .right-box .items .item{float: left; text-align: center; margin-right: 29px; position: relative; z-index: 99;}
+            .gxcz .right-box .items .item .text{display: block; width: 60px; height: 60px; text-align: center; line-height: 60px; border-radius: 50%; background: #4b4b4b; color: #fdf204; overflow: hidden;}
+            .gxcz .right-box .items .item .text:hover{
+                background:#fdf204;color:#4b4b4b;
+            }
+            .gxcz .right-box .bycar .items .item .icon{display: block; width: 60px; height: 30px; margin-top: 10px; background: url(images/gxcz_icon2.jpg) no-repeat;}
+            .gxcz .right-box .bynormal{margin-top: 50px;}
+            .gxcz .right-box .bynormal .items .item .icon{display: block; width: 60px; height: 30px; margin-top: 10px; background: url(images/gxcz_icon1.jpg) no-repeat;}
+
+            .gxcz .search-box{clear: both; overflow: hidden;}
+            .gxcz .mod-search{float: right; width: 246px; height: 26px; margin: 15px; background: url(images/search1.png) no-repeat center;}
+            .gxcz .mod-search form,
+            .gxcz .mod-search form button{padding: 0px; margin: 0px; height: 25px; line-height: 25px;}
+            .gxcz .mod-search form input{width: 200px; border: 0px; margin-left: 10px; color: #c5c5c5; outline: none;}
+            .gxcz .mod-search form button{width: 30px; background: none; border: none; vertical-align:middle; cursor: pointer;}
+            .gxcz .keyword{float: right; height: 26px; margin: 15px 20px 15px 0px; line-height: 26px; }
+            .gxcz .keyword a{display: block; float: left; margin-left: 10px; color: #4c4c4c; font-size: 13px; text-decoration: none;}
+
+            .search-shop .mod-bd{padding: 10px; overflow: hidden; font-family: 微软雅黑;}
+            .search-shop .left-box{float: left; width: 225px; height: 185px; padding: 15px; background: #FFF; color: #686868;}
+            .search-shop .left-box input{border:1px solid #d5d5d5; width: 130px; height: 20px; line-height: 20px; padding: 0px 5px; margin-top: 5px;}
+            .search-shop .left-box .title{font-size: 16px; font-weight: bold;}
+            .search-shop .left-box .currentPoint{margin-top: 20px;}
+            .search-shop .left-box .currentPoint span{font-size: 16px; font-weight: bold;}
+
+            .search-shop .left-box .searchByCity{margin-top: 15px;}
+            .search-shop .left-box .searchByCity select{display: block; border:1px solid #d5d5d5; width: 130px; height: 20px; line-height: 20px; padding: 0px 5px; margin-top: 5px;}
+
+            .search-shop .right-box{float: left; overflow: hidden; width: 715px; height: 215px;}
+            .search-shop .right-box .items{padding: 0px 30px;height:215px;overflow-x:hidden;overflow-y: scroll; }
+            .search-shop .right-box .item{display: block; overflow: hidden; padding: 10px; margin-bottom: 0px; border-bottom: 1px solid #FFF;cursor:pointer;}
+            .search-shop .right-box .item:hover{background:#e4e4e4;}
+            .search-shop .right-box .item .title{font-size: 18px; font-weight: bold; color: #8b8b8b;}
+            .search-shop .right-box .item .desc{margin: 5px 0px; overflow: hidden;}
+            .search-shop .right-box .item .desc span,
+            .search-shop .right-box .item .desc a
+            {display: block; float: left; color: #8b8b8b; margin-right: 15px; font-size: 13px; text-decoration: none;}
+            
+            .search-shop .right-box .item .desc span.star{width: 65px; height: 13px; margin-left: 30px; background: url(images/star.jpg) no-repeat;}
+        </style>
+    </head>
+    <body style="margin:0;overflow-x:hidden;">
+
+	<div style="width:100%;overflow-x:hidden;">
+        <script>
+            theSly = {};
+            function updateScroll(elem) {
+
+                if (elem.attr('sly')) {
+
+                    theSly[ elem.attr('sly') ].reload();
+
+                    if (elem.children().eq(0).height() <= elem.children().eq(1).height()) {
+
+                        elem.children().eq(1).hide();
+                    } else {
+                        elem.children().eq(1).show();
+                    }
+
+                }
+                else {
+                    $slyScrollBar = $('<div class="slyScrollBar"><div class="handle"><div class="mousearea"></div></div></div>');
+
+
+                    elem.find('.slyScrollBar').remove();
+                    elem.append($slyScrollBar).css('position', 'relative');
+
+                    var slyId = (new Date()).getTime();
+                    elem.attr('sly', slyId);
+                    theSly[ slyId ] = new Sly(elem, {
+                        scrollBy: 50,
+                        smart: 1,
+                        speed: 200,
+                        easing: 'easeOutExpo',
+                        dynamicHandle: 1,
+                        dragHandle: 1,
+                        clickBar: 1,
+                        mouseDragging: 0,
+                        touchDragging: 0,
+                        releaseSwing: 1,
+                        elasticBounds: 1,
+                        scrollBar: $slyScrollBar
+
+                    });
+
+                    theSly[ slyId ].init();//.toEnd();
+
+                    if (elem.children().eq(0).height() <= elem.children().eq(1).height()) {
+                        elem.children().eq(1).hide();
+                    } else {
+                        elem.children().eq(1).show();
+                    }
+
+                    theSly[ slyId ].on('moveStart', function() {
+                        theSly[ slyId ].reload();
+                    });
+                    $(window).bind('resize', function() {
+                        //theSly[ slyId ].reload();
+                        updateScroll(elem);
+                    });
+                }
+
+            }
+        </script>
+        <!--店招-->
+        <div class="shop-banner">
+            <div class="content">
+                <div class="nav">
+                    <a href="#" target="_blank">
+                        <span>首页</span>
+                        <span>HOME</span>
+                    </a>
+                    <a href="#" target="_blank">
+                        <span>所以商品</span>
+                        <span>ALL</span>
+                    </a>
+                    <a href="#" target="_blank">
+                        <span>车型搜索</span>
+                        <span>CAR</span>
+                    </a>
+                    <a href="#" target="_blank">
+                        <span>促销活动</span>
+                        <span>SALE</span>
+                    </a>
+                    <a href="#" target="_blank">
+                        <span>轮胎知识</span>
+                        <span>KNOWLEDGE</span>
+                    </a>
+                    <a href="#" target="_blank">
+                        <span>站点查询</span>
+                        <span>MAP</span>
+                    </a>
+                    <a href="#" target="_blank">
+                        <span>关于米其林</span>
+                        <span>ABOUT STORY</span>
+                    </a>
+                    <a href="#" target="_blank">
+                        <span>自助购物</span>
+                        <span>SERVICE</span>
+                    </a>
+                </div>
+                <div class="search">
+                    <form action="" method="POST">
+                        <input type="text" value="" placeholder="Search">
+                        <button type="submit"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div style="width:990px;margin:0 auto;position:relative;">
+            <img src="kv2.jpg" style="left:-465px;position:relative;">
+
+            <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="1920" height="522" style="position: relative;left:-465px;display:none;">
+                <param name="movie" value="kv.swf">
+                <param name="quality" value="high">
+                <param name="wmode" value="transparent">
+                <embed src="kv.swf" width="1920" height="522" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" wmode="transparent">
+            </object>
+        </div>
+
+		<style>
+		.fixed{
+			position: fixed;
+			right: 10px;
+			top: 200px;
+			z-index: 99;
+			width: 147px;
+			height: 400px;
+			overflow: hidden;
+		}
+		.fixed .f1{
+			position:absolute;
+			top:0;
+			left:0;
+			z-index:9999999;
+		}
+		.fixed .f2{
+			position:absolute;
+			bottom:0px;
+			left:0;
+		}
+
+		.fixed .f2-off{
+			display:none;
+			position:absolute;
+			bottom:0;
+			left:0;
+		}
+		.fixed .f2-off.show{
+			display:block;
+		}
+		.fixed .btn{
+			z-index: 99999;
+			width: 80px;
+			height: 30px;
+			bottom: 30px;
+			position: absolute;
+			left: 32px;
+			cursor:pointer;
+		}
+		.fixed > div{
+			position:absolute;
+			top:116px;
+			height:191px;
+			width:148px;
+			overflow:hidden;
+
+			-webkit-transition:height .3s ease;
+			-moz-transition:height .3s ease;
+			-o-transition:height .3s ease;
+			transition:height .3s ease;
+		}
+		.fixed > div.closing{
+			height:74px;
+		}
+		.fixed .navi{
+			position:absolute;
+			width:191px;
+			bottom:70px;
+			z-index:999;
+		}
+		.fixed .navi a{
+			display:block;
+			height:37px;
+		}
+
+		</style>
+		<div class="fixed">
+			<img class="f1" src="images/fix-1.png">
+
+			<div>
+				<img class="f2" src="images/fix-2.png">
+				<img class="f2-off" src="images/fix-2-off.png">
+
+				<div class="navi">
+					<a href="#anchor_1"> </a>
+					<a href="#anchor_1"> </a>
+					<a href="#anchor_2"> </a>
+				</div>
+				<div class="btn"> </div>
+			</div>
+		</div>
+	
+		
+
+        <div style="position:relative;height: 430px;width: 990px;margin: 0 auto;overflow: hidden;margin-top:10px;background:url(bg.jpg) no-repeat center center;" class="">
+            <div class="slice slice_1" style="background-image:url(hover-1.png);width: 545px;">
+                <img src="text1.png">
+                <div style="position:absolute;bottom:18px;left:20px;width:26px;height:24px;background:url(icon-hover.jpg) no-repeat center center;"></div>
+            </div>
+            <div class="slice slice_2" style="background-image:url(hover-2.png);width: 617px;">
+                <img src="text2.png">
+                <div style="position:absolute;bottom:18px;left:38px;width:26px;height:24px;background:url(icon-hover.jpg) no-repeat center center;"></div>
+            </div>
+            <div class="slice slice_3" style="background-image:url(hover-3.png);width: 543px;">
+                <img src="text3.png">
+                <div style="position:absolute;bottom:15px;left:38px;width:26px;height:24px;background:url(icon-hover.jpg) no-repeat center center;"></div>
+            </div>
+        </div>
+
+		<a name="anchor_1"></a>
+		<div class="gxcz xzlt" style="position: relative; width: 990px; margin: 0px auto; overflow: hidden; margin-top: 10px; background-color: #f2f2f2;">
+            <div class="left-box">
+                <img src="images/modbg.jpg">
+                <div class="tabs">
+                    <div class="tab-nav">
+                        <a class="selected type_1" style="margin-right: 5px;">按车辆</a>
+                        <a class="type_2">按个性定制</a>
+                    </div>
+
+
+
+					<div class="tab-con type_1">
+
+                        <div class="section">
+                            <div class="section-box">
+                                <div class="section-label">
+                                    <span>1</span>品牌
+                                    <div class="v"></div>
+                                </div>
+                                <div class="section-con">
+                                    <div class="section-wrap">
+                                        <div class="section-index">A</div>
+                                        <div class="section-list">
+                                            <a>奥迪</a>
+                                            <a>阿斯顿马丁</a>
+                                            <a>阿尔法罗米欧</a>
+                                        </div>
+                                    </div>
+                                    <div class="section-wrap">
+                                        <div class="section-index">B</div>
+                                        <div class="section-list">
+                                            <a>巴博斯</a>
+                                            <a>宝骏</a>
+                                            <a>宝马</a>
+                                            <a>保时捷</a>
+                                            <a>北京汽车</a>
+                                            <a>北汽制造</a>
+                                            <a>奔驰</a>
+                                            <a>奔腾</a>
+                                            <a>本田</a>
+                                            <a>标致</a>
+                                            <a>别克</a>
+                                            <a>宾利</a>
+                                            <a>比亚迪</a>
+                                        </div>
+                                    </div>
+                                    <div class="section-wrap">
+                                        <div class="section-index">C</div>
+                                        <div class="section-list">
+                                            <a>长安</a>
+                                            <a>长城</a>
+                                            <a>昌河</a>
+                                            <a>传褀</a>
+                                        </div>
+                                    </div>
+                                    <div class="section-wrap">
+                                        <div class="section-index">D</div>
+                                        <div class="section-list">
+                                            <a>大发</a>
+                                            <a>道奇</a>
+                                            <a>大众</a>
+                                            <a>帝豪</a>
+                                            <a>东风</a>
+                                            <a>东南</a>
+                                            <a>DS</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="section-box closing">
+                                <div class="section-label">
+                                    <span>2</span>车系-车型
+                                    <div class="v"></div>
+                                </div>
+                                <div class="section-con" style="height:55px;">
+                                    <div class="section-wrap">
+                                        <div class="section-index"></div>
+                                        <div class="section-list">
+                                            <a>A4L</a>
+                                            <a>A6L</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="section-box closing">
+                                <div class="section-label">
+                                    <span>3</span>年份-版本
+                                    <div class="v"></div>
+                                </div>
+
+                                <div class="section-con" style="height:55px;">
+                                    <div class="section-wrap">
+                                        <div class="section-index"></div>
+                                        <div class="section-list">
+                                            <a>2013</a>
+                                            <a>2014</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="section-box closing">
+                                <div class="section-label">
+                                    <span>4</span>季节
+                                    <div class="v"></div>
+                                </div>
+                                <div class="section-con" style="height:55px;">
+                                    <div class="section-wrap">
+                                        <div class="section-index"></div>
+                                        <div class="section-list">
+                                            <a>春夏</a>
+                                            <a>秋冬</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        
+						<div class="getWheel disabled">OK</div>
+						<div class="empty disabled">清空</div>
+
+                    </div>
+
+
+
+                    <div class="tab-con type_2" style="display:none;">
+
+                        <div class="section">
+                            <div class="section-box">
+                                <div class="section-label">
+                                    <span>1</span>功能性
+                                    <div class="v"></div>
+                                </div>
+                                <div class="section-con" style="height:55px;">
+                                    <div class="section-wrap">
+                                        <div class="section-index"></div>
+                                        <div class="section-list">
+                                            <a>运动</a>
+                                            <a>节能</a>
+                                            <a>静音</a>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+                            <div class="section-box closing">
+                                <div class="section-label">
+                                    <span>2</span>季节
+                                    <div class="v"></div>
+                                </div>
+                                <div class="section-con" style="height:55px;">
+                                    <div class="section-wrap">
+                                        <div class="section-index"></div>
+                                        <div class="section-list">
+                                            <a>雪地</a>
+                                            <a>夏季</a>
+											<a>攀爬</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="section-box closing">
+                                <div class="section-label">
+                                    <span>3</span>速度级别
+                                    <div class="v"></div>
+                                </div>
+
+                                <div class="section-con" style="height:105px;">
+                                    <div class="section-wrap">
+                                        <div class="section-index"></div>
+                                        <div class="section-list">
+                                            <a>190KM/H</a>
+                                            <a>210KM/H</a>
+											<a>240KM/H</a>
+											<a>270KM/H</a>
+											<a>300KM/H</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="section-box closing">
+                                <div class="section-label">
+                                    <span>4</span>价格
+                                    <div class="v"></div>
+                                </div>
+                                <div class="section-con" style="height:80px;">
+                                    <div class="section-wrap">
+                                        <div class="section-index"></div>
+                                        <div class="section-list">
+                                            <a>150-200</a>
+                                            <a>200-250</a>
+											<a>250-300</a>
+											<a>300-400</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+							<div class="section-box closing">
+                                <div class="section-label">
+                                    <span>5</span>横截面宽度
+                                    <div class="v"></div>
+                                </div>
+                                <div class="section-con" style="height:100px;">
+                                    <div class="section-wrap">
+                                        <div class="section-index"></div>
+                                        <div class="section-list">
+                                            <a>145</a>
+                                            <a>155</a>
+											<a>165</a>
+											<a>175</a>
+											<a>185</a>
+											<a>195</a>
+											<a>205</a>
+											<a>215</a>
+											<a>225</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+							<div class="section-box closing">
+                                <div class="section-label">
+                                    <span>6</span>轮毂直径
+                                    <div class="v"></div>
+                                </div>
+                                <div class="section-con" style="height:56px;">
+                                    <div class="section-wrap">
+                                        <div class="section-index"></div>
+                                        <div class="section-list">
+                                            <a>13</a>
+                                            <a>14</a>
+											<a>15</a>
+											<a>16</a>
+											<a>17</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+							<div class="section-box closing">
+                                <div class="section-label">
+                                    <span>7</span>高宽比
+                                    <div class="v"></div>
+                                </div>
+                                <div class="section-con" style="height:77px;">
+                                    <div class="section-wrap">
+                                        <div class="section-index"></div>
+                                        <div class="section-list">
+                                            <a>25</a>
+                                            <a>30</a>
+											<a>35</a>
+											<a>40</a>
+											<a>45</a>
+											<a>50</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        
+						<div class="getWheel disabled">OK</div>
+
+						<div class="empty disabled">清空</div>
+
+                    </div>
+                </div>
+            </div>
+
+			
+			<script>
+				$( '.fixed a' ).eq( 0 ).bind( 'click', function(){
+					$( '.tab-nav .type_1' ).click();
+				} );
+
+				$( '.fixed a' ).eq( 1 ).bind( 'click', function(){
+					$( '.tab-nav .type_2' ).click();
+				} );
+
+
+				$( '.fixed .btn' ).bind( 'click', function(){
+					if( $( this ).siblings( '.f2-off' ).hasClass( 'show' ) ){
+						$( this ).siblings( '.f2-off' ).removeClass( 'show' );
+						$( this ).parent().removeClass( 'closing' );
+					}else{
+						$( this ).siblings( '.f2-off' ).addClass( 'show' );
+						$( this ).parent().addClass( 'closing' );
+					}
+				} );
+				</script>
+
+
+			<script>
+
+			var connected = true;
+			
+			$( '.tab-nav a' ).bind( 'click', function(){
+					
+					if( $( this ).hasClass('type_2') ){
+						connected = false;
+					}
+					else{
+						connected = true;
+					}
+				
+					$( this ).addClass( 'selected' ).siblings().removeClass( 'selected' );
+					$( '.tab-con' ).hide().eq( $( this ).index() ).show();
+				
+
+			} )
+			
+			</script>
+
+            <style>
+            .section-box .v{
+                display: none;
+                color: yellow;
+                font-size: 12px;
+                background: #707070;
+                padding: 3px 7px;
+                border-radius: 25px;
+                float: right;
+            }
+            .section-box .section-con{
+                padding:0;
+                -webkit-transition:all .3s ease;
+                -moz-transition:all .3s ease;
+                -o-transition:all .3s ease;
+                transition:all .3s ease;
+            }
+            .section-box.closing .section-con{
+                height:0!important;
+                padding:0;
+            }
+
+            .getWheel,
+			.empty{
+                float: right;
+                display: block;
+                width: 50px;
+                height: 30px;
+                text-align: center;
+                line-height: 30px;
+                background: #4b4b4b;
+                color: #fdf204;
+                overflow: hidden;
+                cursor: pointer;
+                margin-top:20px;
+				margin-left:10px;
+            }
+            .getWheel.disabled,
+			.empty.disabled{
+                cursor:default;
+                background:#E0E0E0;
+                color:#C5C5C5;
+            }
+            .getWheel:hover,
+			.empty:hover{
+                background:#333;
+            }
+            .getWheel.disabled:hover,
+			.empty.disabled:hover{
+                background:#E0E0E0;
+                color:#C5C5C5;
+            }
+
+            </style>
+
+            
+            
+            <div class="right-box">
+
+
+                <div class="goods" style="display:none;">
+                    <a class="item" style="margin-left: 0px; margin-top: 0px;" href="#" target="_blank"></a>
+                    <a class="item" style="margin-top: 0px;" href="#" target="_blank"></a>
+                    <a class="item" style="margin-top: 0px;" href="#" target="_blank"></a>
+                    <a class="item" style="margin-left: 0px;" href="#" target="_blank"></a>
+                    <a class="item" href="#" target="_blank"></a>
+                    <a class="item" href="#" target="_blank"></a>
+                </div>
+
+
+                <div class="tool_desc" style="display:block">
+                    <div class="bycar">
+                        <div class="title">
+                            <img src="images/gxcz_title2.jpg">
+                        </div>
+                        <div class="items">
+                            <div class="item">
+                                <span>01</span>
+                                <a class="text">品牌</a>
+                                <span class="icon" style="background-position: 7px center;"></span>
+                            </div>
+                            <div class="item">
+                                <span>02</span>
+                                <a class="text">车系<br>车型</a>
+                                <span class="icon" style="background-position: -90px center;"></span>
+                            </div>
+                            <div class="item">
+                                <span>03</span>
+                                <a class="text">年份<br>版本</a>
+                                <span class="icon" style="background-position: -182px center;"></span>
+                            </div>
+                            <div class="item">
+                                <span>04</span>
+                                <a class="text">季节</a>
+                                <span class="icon" style="background-position: -278px center;"></span>
+                            </div>
+                            <div class="item" style="margin: 0px;">
+                                <span>05</span>
+                                <a class="text">OK</a>
+                                <span class="icon" style="background-position: -366px center;"></span>
+                            </div>
+                            <div class="limit"></div>
+                        </div>
+                    </div>
+
+                    <div class="bynormal">
+                        <div class="title">
+                            <img src="images/gxcz_title1.jpg">
+                        </div>
+                        <div class="items">
+                            <div class="item">
+                                <span>01</span>
+                                <a class="text">品牌</a>
+                                <span class="icon" style="background-position: 17px center;"></span>
+                            </div>
+                            <div class="item">
+                                <span>02</span>
+                                <a class="text">车系<br>车型</a>
+                                <span class="icon" style="background-position: -77px center;"></span>
+                            </div>
+                            <div class="item">
+                                <span>03</span>
+                                <a class="text">年份<br>版本</a>
+                                <span class="icon" style="background-position: -166px center;"></span>
+                            </div>
+                            <div class="item">
+                                <span>04</span>
+                                <a class="text">季节</a>
+                                <span class="icon" style="background-position: -258px center;"></span>
+                            </div>
+                            <div class="item">
+                                <span>05</span>
+                                <a class="text">季节</a>
+                                <span class="icon" style="background-position: -348px center;"></span>
+                            </div>
+                            <div class="item">
+                                <span>06</span>
+                                <a class="text">季节</a>
+                                <span class="icon" style="background-position: -439px center;"></span>
+                            </div>
+                            <div class="item">
+                                <span>07</span>
+                                <a class="text">季节</a>
+                                <span class="icon" style="background-position: -531px center;"></span>
+                            </div>
+                            <div class="item" style="margin: 0px;">
+                                <span>08</span>
+                                <a class="text">OK</a>
+                                <span class="icon" style="background-position: -621px center;"></span>
+                            </div>
+
+                            <div class="limit"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <script>
+            disabled = true;
+
+            $( '.section-box' ).bind( 'click', function(){
+				if( connected ){
+					if( $( this ).prev().size() > 0 && $( this ).prev().find( '.v' ).text() != '' || $( this ).index() == 0 )
+						$( this ).removeClass('closing').siblings().addClass('closing');
+				}
+				else{
+					$( this ).removeClass('closing').siblings().addClass('closing');
+				}
+            } );
+
+            $( '.section-con .section-list a' ).bind( 'click', function( e ){
+				 $( this ).parents('.tab-con').find( '.empty' ).removeClass('disabled');
+                disabled = false;
+                $( this ).parents('.section-box').find( '.v' ).text( $( this ).text() ).show();
+
+				
+
+					var index = $( this ).parents('.section-box').index();
+
+				
+
+					$( this ).parents('.section-box').siblings().each( function(){
+
+						if( connected ){
+							if( $( this ).index() > index ){
+								$( this ).find( '.v' ).text( '' ).hide();
+								
+
+								$( '.right-box .tool_desc' ).show();
+								$( '.right-box .goods' ).hide();
+
+							}
+						}
+
+						//console.log( $(this).index() == index + 1 );
+
+						if( $( this ).index() == index + 1 ){
+						   $( this ).click();
+						}
+
+					} );
+
+				
+
+			
+
+                if(!disabled){
+                    $( this ).parents('.tab-con').find( '.getWheel' ).removeClass('disabled');
+                }
+                else{
+                    $( this ).parents('.tab-con').find( '.getWheel' ).addClass('disabled');
+                }
+
+                e.stopPropagation();
+
+            } );
+
+            $( '.getWheel' ).bind( 'click', function(){
+                if( !$( this ).hasClass('disabled') ){
+                    $( '.right-box .tool_desc' ).hide();
+                    $( '.right-box .goods' ).show();
+                }
+            } );
+
+			$( '.empty' ).bind( 'click', function(){
+				$( this ).parent().find( '.v' ).text('').hide();
+				$( this ).parent().find( '.section-box' ).eq( 0 ).click();
+				$( this ).parent().find( '.getWheel' ).addClass( 'disabled' );
+				$( '.right-box .tool_desc' ).show();
+				$( '.right-box .goods' ).hide();
+				$( this ).addClass( 'disabled' );
+			} )
+            </script>
+
+
+            <div class="search-box">
+                
+                <div class="keyword">
+                    <a href="#" target="_blank">所有宝贝</a>
+                    <a href="#" target="_blank">按综合</a>
+                    <a href="#" target="_blank">按销量</a>
+                    <a href="#" target="_blank">按新品</a>
+                    <a href="#" target="_blank">按价格</a>
+                </div>
+                <div class="mod-search">
+                    <form action="" method="POST">
+                        <input type="text" value="" placeholder="Search">
+                        <button type="submit"></button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+		
+		<a name="anchor_2"></a>
+		<div class="search-shop" style="position: relative; width: 990px; margin: 0px auto; overflow: hidden; margin-top: 10px; background-color: #f2f2f2;">
+            <div class="mod-bd">
+                <div class="left-box">
+                    <div class="title">查找身边的驰加店</div>
+                    <div class="currentPoint">
+                        <span>您当前的位置</span>
+                        <input name="incity" type="text" value="北京">
+                    </div>
+                    <div class="searchByCity">
+                        <span>按省市查找</span>
+                        <select name="province">
+                            <option value="北京" selected="selected">北京</option>
+                            <option value="上海">上海</option>
+                            <option value="广州">广州</option>
+                        </select>
+                        <select name="citys">
+                            <option value="北京" selected="selected">请选择城市</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="right-box">
+                    <div class="items">
+                        <div class="item">
+                            <span class="title">北京鑫祥运博达汽配经营部</span>
+                            <div class="desc">
+                                <span class="add">北京市海淀区徐庄路85号中联汽车交易市场4区</span>
+                                <span class="phone">010-88138973</span>
+                                <span class="star"></span>
+                                <a class="detailLink" href="#" target="_blank">了解详情&gt;&gt;</a>
+                                <span class="toPhone">发送到手机</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <span class="title">北京鑫祥运博达汽配经营部</span>
+                            <div class="desc">
+                                <span class="add">北京市海淀区徐庄路85号中联汽车交易市场4区</span>
+                                <span class="phone">010-88138973</span>
+                                <span class="star"></span>
+                                <a class="detailLink" href="#" target="_blank">了解详情&gt;&gt;</a>
+                                <span class="toPhone">发送到手机</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <span class="title">北京鑫祥运博达汽配经营部</span>
+                            <div class="desc">
+                                <span class="add">北京市海淀区徐庄路85号中联汽车交易市场4区</span>
+                                <span class="phone">010-88138973</span>
+                                <span class="star"></span>
+                                <a class="detailLink" href="#" target="_blank">了解详情&gt;&gt;</a>
+                                <span class="toPhone">发送到手机</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <span class="title">北京鑫祥运博达汽配经营部</span>
+                            <div class="desc">
+                                <span class="add">北京市海淀区徐庄路85号中联汽车交易市场4区</span>
+                                <span class="phone">010-88138973</span>
+                                <span class="star"></span>
+                                <a class="detailLink" href="#" target="_blank">了解详情&gt;&gt;</a>
+                                <span class="toPhone">发送到手机</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <span class="title">北京鑫祥运博达汽配经营部</span>
+                            <div class="desc">
+                                <span class="add">北京市海淀区徐庄路85号中联汽车交易市场4区</span>
+                                <span class="phone">010-88138973</span>
+                                <span class="star"></span>
+                                <a class="detailLink" href="#" target="_blank">了解详情&gt;&gt;</a>
+                                <span class="toPhone">发送到手机</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <span class="title">北京鑫祥运博达汽配经营部</span>
+                            <div class="desc">
+                                <span class="add">北京市海淀区徐庄路85号中联汽车交易市场4区</span>
+                                <span class="phone">010-88138973</span>
+                                <span class="star"></span>
+                                <a class="detailLink" href="#" target="_blank">了解详情&gt;&gt;</a>
+                                <span class="toPhone">发送到手机</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="branks">
+            <div class="item" style="margin-left: 0px;">
+                <img src="images/dazhong.png">
+                
+                <div class="series s1">
+                    <a href="#" target="_blank">高尔夫</a>
+                    <a href="#" target="_blank">高尔夫GTI</a>
+                    <a href="#" target="_blank">速腾</a>
+                    <a href="#" target="_blank">宝来</a>
+                    <a href="#" target="_blank">大众CC</a>
+                </div>
+
+            </div>
+            <div class="item">
+                <img src="images/fengtian.png">
+                <div class="series" style="left:11px;">
+                    <a href="#" target="_blank">卡罗拉</a>
+                    <a href="#" target="_blank">凯美瑞</a>
+                    <a href="#" target="_blank">锐志</a>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/bentian.png">
+                <div class="series" style="left:9px;">
+                    <a href="#" target="_blank">雅阁</a>
+                    <a href="#" target="_blank">锋范</a>
+                    <a href="#" target="_blank">思域</a>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/bieke.png">
+                <div class="series" style="left:11px;">
+                    <a href="#" target="_blank">凯越</a>
+                    <a href="#" target="_blank">君威</a>
+                    <a href="#" target="_blank">君越</a>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/xuefolan.png">
+                <div class="series">
+                    <a href="#" target="_blank">科鲁兹</a>
+                    <a href="#" target="_blank">乐风</a>
+                    <a href="#" target="_blank">景程</a>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/xiandai.png">
+                <div class="series s6" style="left:11px;">
+                    <a href="#" target="_blank">伊兰特</a>
+                    <a href="#" target="_blank">雅绅特</a>
+                    <a href="#" target="_blank">悦动</a>
+                    <a href="#" target="_blank">ix35</a>
+                </div>
+            </div>
+        </div><!--个性查找-->
+        
+
+        
+
+        <!--实体店铺体验-->
+        
+
+
+        
+
+        <script>
+            $('.slice').bind('mouseenter', function() {
+                var num = $(this).index() + 1;
+                $(this).parent().attr('class', 'hover_' + num);
+            }).bind('mouseleave', function() {
+                $(this).parent().attr('class', '');
+            })
+
+
+
+        </script>
+
+
+        <style>
+    .branks{
+        width: 990px;
+        margin: 0px auto;
+        margin-top: 20px;
+        position: relative;
+        z-index: 99999999;
+        height: 125px;
+        overflow:visible;
+    }
+    .branks .item{
+        position:relative;
+        overflow:visible;
+    }
+    .branks .item img{
+        position:relative;
+        z-index:99;
+    }
+    .branks .item .series{
+        width: 141px;
+        margin: 0 auto;
+        background: #FFFFFF;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.13);
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        position:absolute;
+        bottom:5px;
+        opacity:0;
+        visibility:hidden;
+        overflow:hidden;
+        left:10px;
+        padding-bottom:8px;
+        -webkit-transition: all .3s ease;
+        -moz-transition: all .3s ease;
+        transition: all .3s ease;
+    }
+    .branks .item .series a{
+        display:block;
+        line-height:22px;
+        color:#666;
+        font-size:12px;
+        text-align:center;
+    }
+    .branks .item:hover .series{
+        visibility:visible;
+        opacity:1;
+        bottom:-72px;
+    }
+    .branks .item:hover .series.s1{
+        bottom:-118px;
+    }
+    .branks .item:hover .series.s6{
+        bottom:-94px;
+    }
+
+    </style>
+
+
+    <!--品牌类目-->
+        <div style="width: 990px;margin: 0 auto;text-align: right;font-size: 12px;"><a href="#" style="color: #333;">查看更多品牌</a></div>
+        
+
+
+
+
+
+
+    <style>
+        .scroll{
+            font-family:微软雅黑;
+            background:#EFEFEF;
+        }
+        .scroll .tit{
+            color:#666;
+            font-family:微软雅黑;
+            font-size:14px;
+            line-height:25px;
+            margin: 0 15px 7px;
+        }
+        .scroll .tit span{
+            padding: 0 4px;
+            font-size: 12px;
+            background: #666;
+            color: #FFF;
+            margin-right: 5px;
+        }
+        .scroll .item{
+            line-height:22px;
+            text-indent:15px;
+            color:#333;
+            font-size:13px;
+        }
+        .scroll .options div{
+            cursor:pointer;
+        }
+        .scroll .options div:hover,
+        .scroll .options div.selected{
+            background:#e4e4e4;
+        }
+
+    </style>
+
+
+    
+
+
+
+
+
+
+
+
+    <!--货架1-->
+    <div class="goods" style="margin-top:10px;">
+        <a class="good-hd" style="background-image: url(images/goods1.png);" href="#" target="_blank"></a>
+        <div class="goods-bd">
+            <div class="item" style="margin-left: 0px;">
+                <div class="pic-box">
+                    <a class="pic" style="background-image: url(images/item240.png);" href="#" target="_blank"></a>
+                    <a class="pop-pic" style="background-image: url(images/item240-1.png);" href="#" target="_blank"></a>
+                </div>
+                <a class="item-title" href="#" target="_blank">包邮 防爆气门嘴 米其林轮胎 205/55R16 91V/W</a>
+                <div class="price">
+                    <span class="price-now">￥999.00</span>
+                    <div style="margin-left: 10px; display: inline-block;">
+                        <div class="discount">
+                            <span class="sign"></span>
+                            <span class="discount-number">5.0折</span>
+                        </div>
+                        <div class="price-old">￥1299.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="pic-box">
+                    <a class="pic" style="background-image: url(images/item240.png);" href="#" target="_blank"></a>
+                    <a class="pop-pic" style="background-image: url(images/item240-1.png);" href="#" target="_blank"></a>
+                </div>
+                <a class="item-title" href="#" target="_blank">包邮 防爆气门嘴 米其林轮胎 205/55R16 91V/W</a>
+                <div class="price">
+                    <span class="price-now">￥999.00</span>
+                    <div style="margin-left: 10px; display: inline-block;">
+                        <div class="discount">
+                            <span class="sign"></span>
+                            <span class="discount-number">5.0折</span>
+                        </div>
+                        <div class="price-old">￥1299.00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="pic-box">
+                    <a class="pic" style="background-image: url(images/item240.png);" href="#" target="_blank"></a>
+                    <a class="pop-pic" style="background-image: url(images/item240-1.png);" href="#" target="_blank"></a>
+                </div>
+                <a class="item-title" href="#" target="_blank">包邮 防爆气门嘴 米其林轮胎 205/55R16 91V/W</a>
+                <div class="price">
+                    <span class="price-now">￥999.00</span>
+                    <div style="margin-left: 10px; display: inline-block;">
+                        <div class="discount">
+                            <span class="sign"></span>
+                            <span class="discount-number">5.0折</span>
+                        </div>
+                        <div class="price-old">￥1299.00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="pic-box">
+                    <a class="pic" style="background-image: url(images/item240.png);" href="#" target="_blank"></a>
+                    <a class="pop-pic" style="background-image: url(images/item240-1.png);" href="#" target="_blank"></a>
+                </div>
+                <a class="item-title" href="#" target="_blank">包邮 防爆气门嘴 米其林轮胎 205/55R16 91V/W</a>
+                <div class="price">
+                    <span class="price-now">￥999.00</span>
+                    <div style="margin-left: 10px; display: inline-block;">
+                        <div class="discount">
+                            <span class="sign"></span>
+                            <span class="discount-number">5.0折</span>
+                        </div>
+                        <div class="price-old">￥1299.00</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--货架2-->
+    <div class="goods">
+        <a class="good-hd" style="background-image: url(images/goods2.png);" href="#" target="_blank"></a>
+        <div class="goods-bd">
+            <div class="item" style="margin-left: 0px;">
+                <div class="pic-box">
+                    <a class="pic" style="background-image: url(images/item240.png);" href="#" target="_blank"></a>
+                    <a class="pop-pic" style="background-image: url(images/item240-1.png);" href="#" target="_blank"></a>
+                </div>
+                <a class="item-title" href="#" target="_blank">包邮 防爆气门嘴 米其林轮胎 205/55R16 91V/W</a>
+                <div class="price">
+                    <span class="price-now">￥999.00</span>
+                    <div style="margin-left: 10px; display: inline-block;">
+                        <div class="discount">
+                            <span class="sign"></span>
+                            <span class="discount-number">5.0折</span>
+                        </div>
+                        <div class="price-old">￥1299.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="pic-box">
+                    <a class="pic" style="background-image: url(images/item240.png);" href="#" target="_blank"></a>
+                    <a class="pop-pic" style="background-image: url(images/item240-1.png);" href="#" target="_blank"></a>
+                </div>
+                <a class="item-title" href="#" target="_blank">包邮 防爆气门嘴 米其林轮胎 205/55R16 91V/W</a>
+                <div class="price">
+                    <span class="price-now">￥999.00</span>
+                    <div style="margin-left: 10px; display: inline-block;">
+                        <div class="discount">
+                            <span class="sign"></span>
+                            <span class="discount-number">5.0折</span>
+                        </div>
+                        <div class="price-old">￥1299.00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="pic-box">
+                    <a class="pic" style="background-image: url(images/item240.png);" href="#" target="_blank"></a>
+                    <a class="pop-pic" style="background-image: url(images/item240-1.png);" href="#" target="_blank"></a>
+                </div>
+                <a class="item-title" href="#" target="_blank">包邮 防爆气门嘴 米其林轮胎 205/55R16 91V/W</a>
+                <div class="price">
+                    <span class="price-now">￥999.00</span>
+                    <div style="margin-left: 10px; display: inline-block;">
+                        <div class="discount">
+                            <span class="sign"></span>
+                            <span class="discount-number">5.0折</span>
+                        </div>
+                        <div class="price-old">￥1299.00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="pic-box">
+                    <a class="pic" style="background-image: url(images/item240.png);" href="#" target="_blank"></a>
+                    <a class="pop-pic" style="background-image: url(images/item240-1.png);" href="#" target="_blank"></a>
+                </div>
+                <a class="item-title" href="#" target="_blank">包邮 防爆气门嘴 米其林轮胎 205/55R16 91V/W</a>
+                <div class="price">
+                    <span class="price-now">￥999.00</span>
+                    <div style="margin-left: 10px; display: inline-block;">
+                        <div class="discount">
+                            <span class="sign"></span>
+                            <span class="discount-number">5.0折</span>
+                        </div>
+                        <div class="price-old">￥1299.00</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!--货架4-->
+    <div class="goods">
+        <a class="good-hd" style="background-image: url(images/goods4.png);" href="#" target="_blank"></a>
+        <div class="goods-bd">
+            <div class="item" style="margin-left: 0px;">
+                <div class="pic-box">
+                    <a class="pic" style="background-image: url(images/item240.png);" href="#" target="_blank"></a>
+                    <a class="pop-pic" style="background-image: url(images/item240-1.png);" href="#" target="_blank"></a>
+                </div>
+                <a class="item-title" href="#" target="_blank">包邮 防爆气门嘴 米其林轮胎 205/55R16 91V/W</a>
+                <div class="price">
+                    <span class="price-now">￥999.00</span>
+                    <div style="margin-left: 10px; display: inline-block;">
+                        <div class="discount">
+                            <span class="sign"></span>
+                            <span class="discount-number">5.0折</span>
+                        </div>
+                        <div class="price-old">￥1299.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="pic-box">
+                    <a class="pic" style="background-image: url(images/item240.png);" href="#" target="_blank"></a>
+                    <a class="pop-pic" style="background-image: url(images/item240-1.png);" href="#" target="_blank"></a>
+                </div>
+                <a class="item-title" href="#" target="_blank">包邮 防爆气门嘴 米其林轮胎 205/55R16 91V/W</a>
+                <div class="price">
+                    <span class="price-now">￥999.00</span>
+                    <div style="margin-left: 10px; display: inline-block;">
+                        <div class="discount">
+                            <span class="sign"></span>
+                            <span class="discount-number">5.0折</span>
+                        </div>
+                        <div class="price-old">￥1299.00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="pic-box">
+                    <a class="pic" style="background-image: url(images/item240.png);" href="#" target="_blank"></a>
+                    <a class="pop-pic" style="background-image: url(images/item240-1.png);" href="#" target="_blank"></a>
+                </div>
+                <a class="item-title" href="#" target="_blank">包邮 防爆气门嘴 米其林轮胎 205/55R16 91V/W</a>
+                <div class="price">
+                    <span class="price-now">￥999.00</span>
+                    <div style="margin-left: 10px; display: inline-block;">
+                        <div class="discount">
+                            <span class="sign"></span>
+                            <span class="discount-number">5.0折</span>
+                        </div>
+                        <div class="price-old">￥1299.00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="pic-box">
+                    <a class="pic" style="background-image: url(images/item240.png);" href="#" target="_blank"></a>
+                    <a class="pop-pic" style="background-image: url(images/item240-1.png);" href="#" target="_blank"></a>
+                </div>
+                <a class="item-title" href="#" target="_blank">包邮 防爆气门嘴 米其林轮胎 205/55R16 91V/W</a>
+                <div class="price">
+                    <span class="price-now">￥999.00</span>
+                    <div style="margin-left: 10px; display: inline-block;">
+                        <div class="discount">
+                            <span class="sign"></span>
+                            <span class="discount-number">5.0折</span>
+                        </div>
+                        <div class="price-old">￥1299.00</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--货架3-->
+    <div class="goods">
+        <a class="good-hd" style="background-image: url(images/goods3.png);" href="#" target="_blank"></a>
+        <div class="goods-bd">
+            <div class="item" style="margin-left: 0px;">
+                <div class="pic-box">
+                    <a class="pic" style="background-image: url(images/item240.png);" href="#" target="_blank"></a>
+                    <a class="pop-pic" style="background-image: url(images/item240-1.png);" href="#" target="_blank"></a>
+                </div>
+                <a class="item-title" href="#" target="_blank">包邮 防爆气门嘴 米其林轮胎 205/55R16 91V/W</a>
+                <div class="price">
+                    <span class="price-now">￥999.00</span>
+                    <div style="margin-left: 10px; display: inline-block;">
+                        <div class="discount">
+                            <span class="sign"></span>
+                            <span class="discount-number">5.0折</span>
+                        </div>
+                        <div class="price-old">￥1299.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="pic-box">
+                    <a class="pic" style="background-image: url(images/item240.png);" href="#" target="_blank"></a>
+                    <a class="pop-pic" style="background-image: url(images/item240-1.png);" href="#" target="_blank"></a>
+                </div>
+                <a class="item-title" href="#" target="_blank">包邮 防爆气门嘴 米其林轮胎 205/55R16 91V/W</a>
+                <div class="price">
+                    <span class="price-now">￥999.00</span>
+                    <div style="margin-left: 10px; display: inline-block;">
+                        <div class="discount">
+                            <span class="sign"></span>
+                            <span class="discount-number">5.0折</span>
+                        </div>
+                        <div class="price-old">￥1299.00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="pic-box">
+                    <a class="pic" style="background-image: url(images/item240.png);" href="#" target="_blank"></a>
+                    <a class="pop-pic" style="background-image: url(images/item240-1.png);" href="#" target="_blank"></a>
+                </div>
+                <a class="item-title" href="#" target="_blank">包邮 防爆气门嘴 米其林轮胎 205/55R16 91V/W</a>
+                <div class="price">
+                    <span class="price-now">￥999.00</span>
+                    <div style="margin-left: 10px; display: inline-block;">
+                        <div class="discount">
+                            <span class="sign"></span>
+                            <span class="discount-number">5.0折</span>
+                        </div>
+                        <div class="price-old">￥1299.00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="pic-box">
+                    <a class="pic" style="background-image: url(images/item240.png);" href="#" target="_blank"></a>
+                    <a class="pop-pic" style="background-image: url(images/item240-1.png);" href="#" target="_blank"></a>
+                </div>
+                <a class="item-title" href="#" target="_blank">包邮 防爆气门嘴 米其林轮胎 205/55R16 91V/W</a>
+                <div class="price">
+                    <span class="price-now">￥999.00</span>
+                    <div style="margin-left: 10px; display: inline-block;">
+                        <div class="discount">
+                            <span class="sign"></span>
+                            <span class="discount-number">5.0折</span>
+                        </div>
+                        <div class="price-old">￥1299.00</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <!--店尾-->
+    <div class="stdpty" style="position: relative; width: 990px; margin: 0px auto; overflow: hidden; margin-top: 10px; background: #f2f2f2;">
+            <div style="width: 100%; height: 46px; background: url(images/stdpty.jpg) no-repeat center; margin-bottom: 10px;"></div>
+
+            <div class="mod-bd">
+                <div class="left-box" style="position:relative;">
+                    <div class="map"></div>
+					
+					<div class="circle" style="position:absolute;">
+						
+					</div>
+
+					<style>
+
+					@keyframes circle
+					{
+					0% {opacity: 0.5;transform:scale(1);}
+					50% {opacity: 1;transform:scale(1.05);}
+					100% {opacity: 0.5;transform:scale(1);}
+					}
+
+					@-moz-keyframes circle /* Firefox */
+					{
+					0% {opacity: 0.5;-moz-transform:scale(1);}
+					50% {opacity: 1;-moz-transform:scale(1.05);}
+					100% {opacity: 0.5;-moz-transform:scale(1);}
+					}
+
+					@-webkit-keyframes circle /* Safari 和 Chrome */
+					{
+					0% {opacity: 0.5;-webkit-transform:scale(1);}
+					50% {opacity: 1;-webkit-transform:scale(1.05);}
+					100% {opacity: 0.5;-webkit-transform:scale(1);}
+					}
+
+					@-o-keyframes circle /* Opera */
+					{
+					0% {opacity: 0.5;-o-transform:scale(1);}
+					50% {opacity: 1;-o-transform:scale(1.05);}
+					100% {opacity: 0.5;-o-transform:scale(1);}
+					}
+
+					.circle{
+						cursor:pointer;
+						position: absolute;
+						border: 4px solid white;
+						left: 232px;
+						top: 87px;
+						width: 30px;
+						height: 30px;
+						border-radius: 50%;
+						opacity: 0.5;
+						-webkit-transform-origin:center center;
+						-moz-transform-origin:center center;
+						-o-transform-origin:center center;
+						transform-origin:center center;
+
+						animation: circle 1s;
+						-moz-animation: circle 1s;	/* Firefox */
+						-webkit-animation: circle 1s;	/* Safari 和 Chrome */
+						-o-animation: circle 1s;
+
+						-webkit-animation-iteration-count: infinite;
+						-moz-animation-iteration-count: infinite;
+						-o-animation-iteration-count: infinite;
+						animation-iteration-count: infinite;
+					}
+					#lb{
+						display:none;
+						position:absolute;
+						left:0;
+						top:0;
+						z-index:99;
+						background:#F2F2F2;
+					}
+					#lb .content{
+						width:572px;
+						height:612px;
+					}
+					#lb .content img{
+						position:absolute;
+						left:0;
+						top:0;
+						visibility:hidden;
+						opacity:0;
+
+						-webkit-transition:all .3s ease;
+						-moz-transition:all .3 ease;
+						-o-transition:all .3 ease;
+						transition:all .3 ease;
+					}
+					#lb .content img.active{
+						visibility:visible;
+						opacity:1;
+					}
+					#lb .prev{
+						position:absolute;
+						left:10px;
+						top:50%;
+						margin-top:-30px;
+						cursor:pointer;
+					}
+					#lb .next{
+						position:absolute;
+						right:10px;
+						top:50%;
+						margin-top:-30px;
+						cursor:pointer;
+					}
+
+					#lb .close{
+						position: absolute;
+						top: 0;
+						right: 0;
+						background: #000;
+						color: #FFF;
+						cursor:pointer;
+						padding: 5px 10px;
+					}
+					#lb .close:hover{
+						background:#333;
+					}
+
+					</style>
+
+					<div style="width:572px;height:612px;" id="lb">
+						<div class="content">
+							<img class="active" src="images/2.jpg" width="572" height="612">
+							<img src="images/1.jpg" width="572" height="612">
+						</div>
+
+						<div class="prev"><img src="http://img04.taobaocdn.com/imgextra/i4/2178114287/TB2FcGpaXXXXXX6XXXXXXXXXXXX_!!2178114287.png"></div>
+						<div class="next"><img src="http://img03.taobaocdn.com/imgextra/i3/2178114287/TB2OEKoaXXXXXaLXXXXXXXXXXXX_!!2178114287.png"></div>
+
+						<div class="close">X</div>
+					</div>
+
+					<script>
+						$( '.circle' ).bind( 'click', function(){
+							$( '#lb' ).fadeIn();
+						} )
+						var lb = $('#lb');
+						var lb_imgs = lb.find( '.content img' );
+						var prev = lb.find( '.prev' );
+						var next = lb.find( '.next' );
+
+						var close = lb.find( '.close' );
+
+						var index = 0;
+						next.bind( 'click', function(){
+							index++;
+							if( index >= lb_imgs.size() )
+								index = 0;
+							lb_imgs.eq( index ).addClass( 'active' ).siblings().removeClass( 'active' );
+						} );
+						prev.bind( 'click', function(){
+							index--;
+							if( index <0 )
+								index =  lb_imgs.size() - 1;
+							lb_imgs.eq( index ).addClass( 'active' ).siblings().removeClass( 'active' );
+						} );
+
+						close.bind( 'click', function(){
+							$( this ).parent().fadeOut();
+						} )
+					</script>
+                </div>
+
+                <div class="right-box">
+                    <div class="box-hd">
+                        <span>轮胎小贴士</span>
+                        <a href="#" target="_blank">查看更多 &gt;</a>
+                    </div>
+                    <div class="box-con">
+                        <div class="item">
+                            <a class="title" href="#" target="_blank">什么情况需要四轮定位</a>
+                            <div class="con">从常规来讲，车辆在每行驶8000-10000公里左右就应该重新做定位检查，所以一年至少要做两次定位检查......</div>
+                            <a class="more" href="#" target="_blank">点击查看 &gt;</a>
+                        </div>
+                        <div class="item">
+                            <a class="title" href="#" target="_blank">什么情况需要四轮定位</a>
+                            <div class="con">从常规来讲，车辆在每行驶8000-10000公里左右就应该重新做定位检查，所以一年至少要做两次定位检查......</div>
+                            <a class="more" href="#" target="_blank">点击查看 &gt;</a>
+                        </div>
+                        <div class="item">
+                            <a class="title" href="#" target="_blank">什么情况需要四轮定位</a>
+                            <div class="con">从常规来讲，车辆在每行驶8000-10000公里左右就应该重新做定位检查，所以一年至少要做两次定位检查......</div>
+                            <a class="more" href="#" target="_blank">点击查看 &gt;</a>
+                        </div>
+                        <div class="item">
+                            <a class="title" href="#" target="_blank">什么情况需要四轮定位</a>
+                            <div class="con">从常规来讲，车辆在每行驶8000-10000公里左右就应该重新做定位检查，所以一年至少要做两次定位检查......</div>
+                            <a class="more" href="#" target="_blank">点击查看 &gt;</a>
+                        </div>
+                        <div class="item">
+                            <a class="title" href="#" target="_blank">什么情况需要四轮定位</a>
+                            <div class="con">从常规来讲，车辆在每行驶8000-10000公里左右就应该重新做定位检查，所以一年至少要做两次定位检查......</div>
+                            <a class="more" href="#" target="_blank">点击查看 &gt;</a>
+                        </div>
+
+                        <div class="phone">
+                            <img src="images/dh.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><div class="mod-ft">
+        <div class="ft-logo"></div>
+        <div class="btns">
+            <a href="#" target="_blank">
+                <span>首页</span>
+                <span class="pop">HOME</span>
+            </a>
+            <a href="#" target="_blank">
+                <span>所有宝贝</span>
+                <span class="pop">ALL</span>
+            </a>
+            <a href="#" target="_blank">
+                <span>返回顶部</span>
+                <span class="pop">TOP</span>
+            </a>
+        </div>
+    </div>
+
+
+</div>
+
+</body></html>
