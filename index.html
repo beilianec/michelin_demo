@@ -1,4 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <html><head>
         <title> MICHELIN Flagship Store </title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -404,6 +405,22 @@
 
         <div style="width:990px;margin:0 auto;position:relative;">
             <img src="kv2.jpg" style="left:-465px;position:relative;">
+            
+            <div class="kv_nav">
+                <a href="#anchor_1" style="position:absolute;width:100px;height:25px;left: -105px;top: 253px;"></a>
+                <a href="#anchor_1" style="position:absolute;width:100px;height:25px;left: 5px;top: 253px;"></a>
+                <a href="#anchor_2" style="position:absolute;width:100px;height:25px;left: 115px;top: 253px;"></a>
+            </div>
+
+            <script>
+            $( '.kv_nav a' ).eq( 0 ).bind( 'click', function(){
+                    $( '.tab-nav .type_1' ).click();
+                } );
+
+                $( '.kv_nav a' ).eq( 1 ).bind( 'click', function(){
+                    $( '.tab-nav .type_2' ).click();
+                } );
+            </script>
 
             <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="1920" height="522" style="position: relative;left:-465px;display:none;">
                 <param name="movie" value="kv.swf">
@@ -422,6 +439,7 @@
             width: 147px;
             height: 400px;
             overflow: hidden;
+            display:none;
         }
         .fixed .f1{
             position:absolute;
@@ -480,7 +498,7 @@
         }
 
         </style>
-        <div class="fixed">
+        <div class="fixed" style="display: none;">
             <img class="f1" src="images/fix-1.png">
 
             <div>
@@ -1942,3 +1960,4 @@ $( document ).bind( 'scroll', function(){
 </script>
 
 </body></html>
+</html>
